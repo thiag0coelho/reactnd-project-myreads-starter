@@ -65,7 +65,9 @@ class BookshelfList extends React.Component {
             ))}
           </div>
         </div>
-        <div className="open-search"><Link to="/search">Add a book</Link></div>
+        <div className="open-search">
+          <Link to="/search">Add a book</Link>
+        </div>
       </div>
     );
   }
