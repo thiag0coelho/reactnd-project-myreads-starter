@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DebounceInput } from 'react-debounce-input';
+import Spinner from './Components/Spinner';
 import * as BooksAPI from './BooksAPI';
 import Book from './Book';
 import './App.css';
@@ -10,6 +11,7 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       booksSearched: [],
       query: '',
     };
@@ -17,10 +19,14 @@ class Search extends React.Component {
 
   getBooks = (query) => {
     if (query && query.length > 1) {
+      this.setState(() => ({
+        loading: true,
+      }));
       BooksAPI.search(query)
         .then((booksSearched) => {
           this.setState(() => ({
             booksSearched: booksSearched.error ? booksSearched.items : booksSearched,
+            loading: false,
           }));
         });
     } else {
@@ -44,9 +50,10 @@ class Search extends React.Component {
   }
 
   render() {
-    const { booksSearched, query } = this.state;
+    const { booksSearched, query, loading } = this.state;
     return (
       <div className="search-books">
+        <Spinner loading={loading} />
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">

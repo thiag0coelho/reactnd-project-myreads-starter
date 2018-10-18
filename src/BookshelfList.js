@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Bookshelf from './Bookshelf';
+import Spinner from './Components/Spinner';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
 
@@ -11,6 +12,7 @@ class BookshelfList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       books: [],
       bookshelfList: [
         {
@@ -37,10 +39,14 @@ class BookshelfList extends React.Component {
   }
 
   getAll = () => {
+    this.setState(() => ({
+      loading: true,
+    }));
     BooksAPI.getAll()
       .then((books) => {
         this.setState(() => ({
           books,
+          loading: false,
         }));
       });
   }
@@ -59,10 +65,11 @@ class BookshelfList extends React.Component {
   }
 
   render() {
-    const { bookshelfList } = this.state;
+    const { bookshelfList, loading } = this.state;
 
     return (
       <div className="list-books">
+        <Spinner loading={loading} />
         <div className="list-books-title">
           <h1>MyReads</h1>
         </div>
