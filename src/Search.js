@@ -33,7 +33,7 @@ class Search extends React.Component {
     this.setState({
       query: event.target.value,
     },
-    (this.getBooks(event.target.value)));
+      (this.getBooks(event.target.value)));
   }
 
   handleUpdateBook = (book, shelf) => {

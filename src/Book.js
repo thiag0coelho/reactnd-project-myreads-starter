@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './App.css';
 
 class Book extends React.Component {
-  getAuthors = book => `${book.authors.join(', ')}`;
+  getAuthors = book => `${book.authors ? book.authors.join(', ') : ''}`;
 
   handleUpdateBook = (event) => {
     const { onUpdateBook, book } = this.props;
@@ -15,7 +15,7 @@ class Book extends React.Component {
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ backgroundImage: `url("${book.imageLinks.thumbnail}")` }} />
+          <div className="book-cover" style={{ backgroundImage: book.imageLinks && `url("${book.imageLinks.thumbnail}")` }} />
           <div className="book-shelf-changer">
             <select onChange={this.handleUpdateBook}>
               <option value="move" disabled>Move to...</option>
