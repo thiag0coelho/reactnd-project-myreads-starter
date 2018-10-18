@@ -5,7 +5,8 @@ import './App.css';
 
 class Bookshelf extends React.Component {
   handleUpdateBook = (book, shelf) => {
-    this.props.onUpdateBook(book, shelf);
+    const { onUpdateBook } = this.props;
+    onUpdateBook(book, shelf);
   };
 
   render() {

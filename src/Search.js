@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import * as BooksAPI from './BooksAPI';
 import Book from './Book';
 import './App.css';
@@ -11,11 +12,9 @@ class Search extends React.Component {
       booksSearched: [],
       query: '',
     };
-
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  getBook(query) {
+  getBooks = (query) => {
     if (query && query.length > 1) {
       BooksAPI.search(query)
         .then((booksSearched) => {
@@ -23,14 +22,24 @@ class Search extends React.Component {
             booksSearched: booksSearched.error ? booksSearched.items : booksSearched,
           }));
         });
+    } else {
+      this.setState(() => ({
+        booksSearched: [],
+      }));
     }
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       query: event.target.value,
     },
-    (this.getBook(event.target.value)));
+    (this.getBooks(event.target.value)));
+  }
+
+  handleUpdateBook = (book, shelf) => {
+    const { onUpdateBook } = this.props;
+
+    onUpdateBook(book, shelf);
   }
 
   render() {
@@ -52,7 +61,10 @@ class Search extends React.Component {
           <ol className="books-grid">
             { booksSearched.map(book => (
               <li key={book.id}>
-                {<Book book={book} />}
+                {<Book
+                  book={book}
+                  onUpdateBook={this.handleUpdateBook}
+                />}
               </li>
             )) }
           </ol>
@@ -61,5 +73,9 @@ class Search extends React.Component {
     );
   }
 }
+
+Search.propTypes = {
+  onUpdateBook: PropTypes.func.isRequired,
+};
 
 export default Search;

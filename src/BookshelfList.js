@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Bookshelf from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
@@ -44,14 +45,16 @@ class BookshelfList extends React.Component {
       });
   }
 
-  getBooksFromShelf(bookshelf) {
+  getBooksFromShelf = (bookshelf) => {
     const { books } = this.state;
 
     return books.filter(x => x.shelf === bookshelf.name);
   }
 
-  updateBook = (book, shelf) => {
-    BooksAPI.update(book, shelf)
+  handleUpdateBook = (book, shelf) => {
+    const { onUpdateBook } = this.props;
+
+    onUpdateBook(book, shelf)
       .then(this.getAll);
   }
 
@@ -70,7 +73,7 @@ class BookshelfList extends React.Component {
                 key={bookshelf.id}
                 bookshelf={bookshelf}
                 books={this.getBooksFromShelf(bookshelf)}
-                onUpdateBook={this.updateBook}
+                onUpdateBook={this.handleUpdateBook}
               />
             ))}
           </div>
@@ -82,5 +85,9 @@ class BookshelfList extends React.Component {
     );
   }
 }
+
+BookshelfList.propTypes = {
+  onUpdateBook: PropTypes.func.isRequired,
+};
 
 export default BookshelfList;
