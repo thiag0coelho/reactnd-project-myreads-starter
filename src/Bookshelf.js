@@ -4,22 +4,24 @@ import Book from './Book';
 import './App.css';
 
 class Bookshelf extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { };
-  }
+  handleUpdateBook = (book, shelf) => {
+    this.props.onUpdateBook(book, shelf);
+  };
 
   render() {
-    const { bookshelfTitle, books } = this.props;
+    const { bookshelf, books } = this.props;
 
     return (
       <div className="bookshelf">
-        <h2 className="bookshelf-title">{bookshelfTitle}</h2>
+        <h2 className="bookshelf-title">{bookshelf.title}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
             {books.map(book => (
               <li key={book.id}>
-                {<Book book={book} />}
+                {<Book
+                  book={book}
+                  onUpdateBook={this.handleUpdateBook}
+                />}
               </li>
             ))}
           </ol>
@@ -30,7 +32,8 @@ class Bookshelf extends React.Component {
 }
 
 Bookshelf.propTypes = {
-  bookshelfTitle: PropTypes.string.isRequired,
+  bookshelf: PropTypes.instanceOf(Object).isRequired,
+  onUpdateBook: PropTypes.func.isRequired,
   books: PropTypes.arrayOf(Object).isRequired,
 };
 

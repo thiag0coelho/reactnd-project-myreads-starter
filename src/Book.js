@@ -2,16 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './App.css';
 
-function getAuthors(book) {
-  return `${book.authors.join(', ')}`;
-}
+class Book extends React.Component {
+  getAuthors = book => `${book.authors.join(', ')}`;
 
-const Book = ({ book }) => (
-  <div className="book">
+  handleUpdateBook(event, props) {
+    props.onUpdateBook(props.book, event.target.value);
+  }
+
+  render() {
+    const { book } = this.props;
+    return (
+     <div className="book">
     <div className="book-top">
       <div className="book-cover" style={{ backgroundImage: `url("${book.imageLinks.thumbnail}")` }} />
       <div className="book-shelf-changer">
-        <select>
+        <select onChange={(e) => this.handleUpdateBook(e, this.props)}>
           <option value="move" disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
           <option value="wantToRead">Want to Read</option>
@@ -21,12 +26,15 @@ const Book = ({ book }) => (
       </div>
     </div>
     <div className="book-title">{book.title}</div>
-    <div className="book-authors">{getAuthors(book)}</div>
+    <div className="book-authors">{this.getAuthors(book)}</div>
   </div>
-);
+    );
+  }
+}
 
 Book.propTypes = {
   book: PropTypes.instanceOf(Object).isRequired,
+  onUpdateBook: PropTypes.func.isRequired,
 };
 
 export default Book;

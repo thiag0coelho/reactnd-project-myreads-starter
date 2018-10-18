@@ -32,6 +32,10 @@ class BookshelfList extends React.Component {
   }
 
   componentDidMount() {
+    this.getAll();
+  }
+
+  getAll = () => {
     BooksAPI.getAll()
       .then((books) => {
         this.setState(() => ({
@@ -44,6 +48,11 @@ class BookshelfList extends React.Component {
     const { books } = this.state;
 
     return books.filter(x => x.shelf === bookshelf.name);
+  }
+
+  updateBook = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+      .then(this.getAll);
   }
 
   render() {
@@ -59,8 +68,9 @@ class BookshelfList extends React.Component {
             {bookshelfList.map(bookshelf => (
               <Bookshelf
                 key={bookshelf.id}
-                bookshelfTitle={bookshelf.title}
+                bookshelf={bookshelf}
                 books={this.getBooksFromShelf(bookshelf)}
+                onUpdateBook={this.updateBook}
               />
             ))}
           </div>
