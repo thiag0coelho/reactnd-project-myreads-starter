@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { DebounceInput } from 'react-debounce-input';
 import * as BooksAPI from './BooksAPI';
 import Book from './Book';
 import './App.css';
@@ -49,8 +50,9 @@ class Search extends React.Component {
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
-            <input
-              type="text"
+            <DebounceInput
+              minLength={2}
+              debounceTimeout={300}
               placeholder="Search by title or author"
               value={query}
               onChange={this.handleChange}
