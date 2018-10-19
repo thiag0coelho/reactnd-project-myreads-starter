@@ -19,9 +19,7 @@ class Search extends React.Component {
 
   getBooks = (query) => {
     if (query && query.length > 1) {
-      this.setState(() => ({
-        loading: true,
-      }));
+      this.isLoading(true);
       BooksAPI.search(query)
         .then((booksSearched) => {
           this.setState(() => ({
@@ -46,8 +44,16 @@ class Search extends React.Component {
   handleUpdateBook = (book, shelf) => {
     const { onUpdateBook } = this.props;
 
-    onUpdateBook(book, shelf);
+    this.isLoading(true);
+    onUpdateBook(book, shelf)
+      .then(() => {
+        setTimeout(() => {
+          this.isLoading(false);
+        }, 300);
+      });
   }
+
+  isLoading = stats => this.setState(() => ({ loading: stats }));
 
   render() {
     const { booksSearched, query, loading } = this.state;
@@ -63,6 +69,7 @@ class Search extends React.Component {
               placeholder="Search by title or author"
               value={query}
               onChange={this.handleChange}
+              autofocus=""
             />
           </div>
         </div>

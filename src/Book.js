@@ -5,6 +5,8 @@ import './App.css';
 class Book extends React.Component {
   getAuthors = book => `${book.authors ? book.authors.join(', ') : ''}`;
 
+  getCategories = book => `${book.categories ? book.categories.join(', ') : ''}`;
+
   handleUpdateBook = (event) => {
     const { onUpdateBook, book } = this.props;
     onUpdateBook(book, event.target.value);
@@ -15,7 +17,11 @@ class Book extends React.Component {
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ backgroundImage: book.imageLinks && `url("${book.imageLinks.thumbnail}")` }} />
+          <div
+            className="book-cover"
+            style={{ backgroundImage: book.imageLinks && `url("${book.imageLinks.thumbnail}")` }}
+            title={`Title: ${book.title}\nAuthors: ${this.getAuthors(book)}\nRating: ${book.averageRating ? book.averageRating : ''}\nCategories: ${this.getCategories(book)}`}
+          />
           <div className="book-shelf-changer">
             <select onChange={this.handleUpdateBook}>
               <option value="move" disabled>Move to...</option>
@@ -26,8 +32,12 @@ class Book extends React.Component {
             </select>
           </div>
         </div>
-        <div className="book-title">{book.title}</div>
-        <div className="book-authors">{this.getAuthors(book)}</div>
+        <div className="book-title">
+          {book.title}
+        </div>
+        <div className="book-authors">
+          {this.getAuthors(book)}
+        </div>
       </div>
     );
   }

@@ -15,28 +15,20 @@ right: 0;
 display: block;
 `;
 
-class Spinner extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  render() {
-    const { loading } = this.props;
-    return (
-      <div className="sweet-loading">
-        <ClipLoader
-          className={override}
-          sizeUnit="px"
-          size={150}
-          color="#2e7c31"
-          loading={loading}
-        />
-      </div>
-    );
-  }
-}
+const Spinner = (props) => {
+  const { loading } = props;
+  return (
+    <div className="sweet-loading">
+      <ClipLoader
+        className={override}
+        sizeUnit="px"
+        size={150}
+        color="#2e7c31"
+        loading={loading}
+      />
+    </div>
+  );
+};
 
 Spinner.propTypes = {
   loading: PropTypes.bool.isRequired,

@@ -39,16 +39,14 @@ class BookshelfList extends React.Component {
   }
 
   getAll = () => {
-    this.setState(() => ({
-      loading: true,
-    }));
-    BooksAPI.getAll()
-      .then((books) => {
-        this.setState(() => ({
-          books,
-          loading: false,
+    this.isLoading(true)
+      .then(() => BooksAPI.getAll()
+        .then((books) => {
+          this.setState(() => ({
+            books,
+            loading: false,
+          }));
         }));
-      });
   }
 
   getBooksFromShelf = (bookshelf) => {
@@ -59,10 +57,12 @@ class BookshelfList extends React.Component {
 
   handleUpdateBook = (book, shelf) => {
     const { onUpdateBook } = this.props;
-
-    onUpdateBook(book, shelf)
-      .then(this.getAll);
+    this.isLoading(true)
+      .then(() => onUpdateBook(book, shelf)
+        .then(this.getAll));
   }
+
+  isLoading = stats => Promise.resolve(this.setState(() => ({ loading: stats })));
 
   render() {
     const { bookshelfList, loading } = this.state;
