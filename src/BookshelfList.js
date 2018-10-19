@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Bookshelf from './Bookshelf';
-import Spinner from './Components/Spinner';
-import * as BooksAPI from './BooksAPI';
-import './App.css';
+import Spinner from './components/Spinner';
+import * as BooksAPI from './helpers/BooksAPI';
+import './styles/App.css';
 
 const getRandomId = () => Math.random().toString(36).substring(7);
 

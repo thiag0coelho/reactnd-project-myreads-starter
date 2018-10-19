@@ -2,8 +2,8 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import BookshelfList from './BookshelfList';
 import Search from './Search';
-import * as BooksAPI from './BooksAPI';
-import './App.css';
+import * as BooksAPI from './helpers/BooksAPI';
+import './styles/App.css';
 
 const handleUpdateBook = (book, shelf) => BooksAPI.update(book, shelf);
 

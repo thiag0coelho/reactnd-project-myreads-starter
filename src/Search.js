@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DebounceInput } from 'react-debounce-input';
-import Spinner from './Components/Spinner';
-import * as BooksAPI from './BooksAPI';
+import Spinner from './components/Spinner';
+import * as BooksAPI from './helpers/BooksAPI';
 import Book from './Book';
-import './App.css';
+import './styles/App.css';
 
 class Search extends React.Component {
   constructor(props) {

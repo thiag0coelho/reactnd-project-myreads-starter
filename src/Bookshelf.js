@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Book from './Book';
-import './App.css';
+import './styles/App.css';
 
 class Bookshelf extends React.Component {
   handleUpdateBook = (book, shelf) => {

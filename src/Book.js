@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './App.css';
+import './styles/App.css';
 
 class Book extends React.Component {
   getAuthors = book => `${book.authors ? book.authors.join(', ') : ''}`;

@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import BooksApp from './BooksApp';
 import { BrowserRouter } from 'react-router-dom';
-import './index.css';
+import BooksApp from './BooksApp';
+import './styles/index.css';
 
 ReactDOM.render(
   <BrowserRouter>
     <BooksApp />
-  </BrowserRouter>, document.getElementById('root'));
+  </BrowserRouter>, document.getElementById('root')
+);
