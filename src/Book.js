@@ -23,7 +23,7 @@ class Book extends React.Component {
             title={`Title: ${book.title}\nAuthors: ${this.getAuthors(book)}\nRating: ${book.averageRating ? book.averageRating : ''}\nCategories: ${this.getCategories(book)}`}
           />
           <div className="book-shelf-changer">
-            <select onChange={this.handleUpdateBook}>
+            <select onChange={this.handleUpdateBook} value={book.shelf ? book.shelf : 'none'}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
