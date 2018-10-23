@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DebounceInput } from 'react-debounce-input';
+import TextField from '@material-ui/core/TextField';
 import Spinner from './components/Spinner';
 import * as BooksAPI from './helpers/BooksAPI';
 import Book from './Book';
@@ -67,9 +68,11 @@ class Search extends React.Component {
               minLength={2}
               debounceTimeout={300}
               placeholder="Search by title or author"
-              value={query}
               onChange={this.handleChange}
               autoFocus
+              value={query}
+              fullWidth
+              element={TextField}
             />
           </div>
         </div>
