@@ -145,7 +145,7 @@ body, .app {
 .book-shelf-changer {
   position: absolute !important;
   background: #2e7c31c2;
-  width: -webkit-fill-available;
+  width: stretch;
   color: white !important;
   text-align: center;
 }
