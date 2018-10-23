@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { Autorenew } from '@material-ui/icons';
 import './styles/App.css';
 
 class Book extends React.Component {
@@ -22,15 +25,14 @@ class Book extends React.Component {
             style={{ backgroundImage: book.imageLinks && `url("${book.imageLinks.thumbnail}")` }}
             title={`Title: ${book.title}\nAuthors: ${this.getAuthors(book)}\nRating: ${book.averageRating ? book.averageRating : ''}\nCategories: ${this.getCategories(book)}`}
           />
-          <div className="book-shelf-changer">
-            <select onChange={this.handleUpdateBook} value={book.shelf ? book.shelf : 'none'}>
-              <option value="move" disabled>Move to...</option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
-            </select>
-          </div>
+          <span />
+          <Select color="#60ac5d" onChange={this.handleUpdateBook} className="book-shelf-changer" value={book.shelf ? book.shelf : 'none'}>
+            <MenuItem value="move" disabled>Move to...</MenuItem>
+            <MenuItem value="currentlyReading">Currently Reading</MenuItem>
+            <MenuItem value="wantToRead">Want to Read</MenuItem>
+            <MenuItem value="read">Read</MenuItem>
+            <MenuItem value="none">None</MenuItem>
+          </Select>
         </div>
         <div className="book-title">
           {book.title}
