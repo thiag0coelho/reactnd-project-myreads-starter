@@ -22,10 +22,10 @@ class Book extends React.Component {
           <div
             className="book-cover"
             style={{ backgroundImage: book.imageLinks && `url("${book.imageLinks.thumbnail}")` }}
-            title={`Title: ${book.title}\nAuthors: ${this.getAuthors(book)}\nRating: ${book.averageRating ? book.averageRating : ''}\nCategories: ${this.getCategories(book)}`}
+            title={`Title: ${book.title}\nAuthors: ${this.getAuthors(book)}\nRating: ${book.averageRating || ''}\nCategories: ${this.getCategories(book)}`}
           />
           <span />
-          <Select color="#60ac5d" onChange={this.handleUpdateBook} className="book-shelf-changer" value={book.shelf ? book.shelf : 'none'}>
+          <Select color="#60ac5d" onChange={this.handleUpdateBook} className="book-shelf-changer" value={book.shelf || 'none'}>
             <MenuItem value="move" disabled>Move to...</MenuItem>
             <MenuItem value="currentlyReading">Currently Reading</MenuItem>
             <MenuItem value="wantToRead">Want to Read</MenuItem>
@@ -41,7 +41,7 @@ class Book extends React.Component {
         </div>
         <div className="book-rating">
           <span>Rating: </span>
-          {book.averageRating || '0'}
+          {book.averageRating || 'none'}
         </div>
       </div>
     );
