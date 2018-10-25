@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Bookshelf from './Bookshelf';
 import Spinner from './components/Spinner';
-import * as BooksAPI from './helpers/BooksAPI';
 import './styles/App.css';
 
 const getRandomId = () => Math.random().toString(36).substring(7);
@@ -12,8 +11,6 @@ class BookshelfList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
-      books: [],
       bookshelfList: [
         {
           title: 'Currently Reading',
@@ -34,38 +31,21 @@ class BookshelfList extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.getAll();
-  }
-
-  getAll = () => {
-    this.isLoading(true)
-      .then(() => BooksAPI.getAll()
-        .then((books) => {
-          this.setState(() => ({
-            books,
-            loading: false,
-          }));
-        }));
-  }
-
   getBooksFromShelf = (bookshelf) => {
-    const { books } = this.state;
+    const { books } = this.props;
 
     return books.filter(x => x.shelf === bookshelf.name);
   }
 
   handleUpdateBook = (book, shelf) => {
     const { onUpdateBook } = this.props;
-    this.isLoading(true)
-      .then(() => onUpdateBook(book, shelf)
-        .then(this.getAll));
+
+    onUpdateBook(book, shelf);
   }
 
-  isLoading = stats => Promise.resolve(this.setState(() => ({ loading: stats })));
-
   render() {
-    const { bookshelfList, loading } = this.state;
+    const { bookshelfList } = this.state;
+    const { loading } = this.props;
 
     return (
       <div className="list-books">
@@ -95,6 +75,8 @@ class BookshelfList extends React.Component {
 
 BookshelfList.propTypes = {
   onUpdateBook: PropTypes.func.isRequired,
+  books: PropTypes.arrayOf(Object).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default BookshelfList;

@@ -12,7 +12,6 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
       booksSearched: [],
       query: '',
     };
@@ -25,7 +24,6 @@ class Search extends React.Component {
         .then((booksSearched) => {
           this.setState(() => ({
             booksSearched: booksSearched.error ? booksSearched.items : booksSearched,
-            loading: false,
           }));
         });
     } else {
@@ -45,19 +43,14 @@ class Search extends React.Component {
   handleUpdateBook = (book, shelf) => {
     const { onUpdateBook } = this.props;
 
-    this.isLoading(true);
-    onUpdateBook(book, shelf)
-      .then(() => {
-        setTimeout(() => {
-          this.isLoading(false);
-        }, 300);
-      });
+    onUpdateBook(book, shelf);
   }
 
   isLoading = stats => this.setState(() => ({ loading: stats }));
 
   render() {
-    const { booksSearched, query, loading } = this.state;
+    const { booksSearched, query } = this.state;
+    const { loading } = this.props;
     return (
       <div className="search-books">
         <Spinner loading={loading} />
@@ -95,6 +88,7 @@ class Search extends React.Component {
 
 Search.propTypes = {
   onUpdateBook: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default Search;

@@ -14,7 +14,14 @@ class Bookshelf extends React.Component {
 
     return (
       <div className="bookshelf">
-        <h2 className="bookshelf-title">{bookshelf.title}</h2>
+        <h2 className="bookshelf-title">
+          <span>
+            {bookshelf.title}
+            {' ('}
+            {books.length || ''}
+            {')'}
+          </span>
+        </h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
             {books.map(book => (
