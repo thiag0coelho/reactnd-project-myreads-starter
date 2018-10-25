@@ -39,6 +39,10 @@ class Book extends React.Component {
         <div className="book-authors">
           {this.getAuthors(book)}
         </div>
+        <div className="book-rating">
+          <span>Rating: </span>
+          {book.averageRating || '0'}
+        </div>
       </div>
     );
   }

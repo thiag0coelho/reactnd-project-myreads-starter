@@ -125,7 +125,8 @@ body, .app {
   width: 140px;
 }
 .book-title,
-.book-authors {
+.book-authors,
+.book-rating {
   font-size: 0.8em;
 }
 .book-title {
