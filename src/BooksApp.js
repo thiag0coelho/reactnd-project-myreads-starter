@@ -20,7 +20,6 @@ class BooksApp extends React.Component {
     this.getAll = this.getAll.bind(this);
     this.isLoading = this.isLoading.bind(this);
     this.handleUpdateBook = this.handleUpdateBook.bind(this);
-    this.updateBookLocal = this.updateBookLocal.bind(this);
     this.getBooksSearched = this.getBooksSearched.bind(this);
   }
 
@@ -81,28 +80,19 @@ class BooksApp extends React.Component {
   }
 
   async handleUpdateBook(book, shelf) {
-    const { isLoading, updateBookLocal } = this;
+    const { isLoading } = this;
+    const { books, booksSearched, query } = this.state;
 
-    await isLoading(true);
-    await updateBookLocal(book, shelf);
+    book.shelf = shelf;
+
+    await this.setState({
+      books: books.filter(b => b.id !== book.id).concat([book]),
+      booksSearched: query ? booksSearched.filter(b => b.id !== book.id).concat([book]) : [],
+      loading: true,
+    });
+
     await BooksAPI.update(book, shelf);
     await isLoading(false);
-  }
-
-  async updateBookLocal(book, shelf) {
-    const { books, getBookFromShelf } = this.state;
-
-    const bookFromShelf = getBookFromShelf(book.id);
-
-    if (bookFromShelf) {
-      const updatedBooks = books.map((mBook) => {
-        if (mBook.id === book.id) {
-          mBook.shelf = shelf;
-        }
-        return mBook;
-      });
-      await this.setState({ books: updatedBooks });
-    }
   }
 
   render() {
