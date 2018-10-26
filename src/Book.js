@@ -4,7 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import './styles/App.css';
 
-class Book extends React.Component {
+class Book extends React.PureComponent {
   getAuthors = book => `${book.authors ? book.authors.join(', ') : ''}`;
 
   getCategories = book => `${book.categories ? book.categories.join(', ') : ''}`;

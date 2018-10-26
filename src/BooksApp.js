@@ -11,6 +11,9 @@ class BooksApp extends React.Component {
     this.state = {
       loading: true,
       books: [],
+      booksSearched: [],
+      query: '',
+      queryHasError: false,
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -18,13 +21,50 @@ class BooksApp extends React.Component {
     this.isLoading = this.isLoading.bind(this);
     this.handleUpdateBook = this.handleUpdateBook.bind(this);
     this.updateBookLocal = this.updateBookLocal.bind(this);
-    this.getBookFromShelf = this.getBookFromShelf.bind(this);
+    this.getBooksSearched = this.getBooksSearched.bind(this);
   }
 
   async componentDidMount() {
     const { getAll } = this;
 
     await getAll();
+  }
+
+  getBookFromShelf = (id) => {
+    const { books } = this.state;
+
+    const returnBook = books.find(book => book.id === id);
+
+    return returnBook;
+  }
+
+  async getBooksSearched(query) {
+    const { isLoading, getBookFromShelf } = this;
+
+    await this.setState({ query });
+
+    if (!query || query.length < 2) {
+      this.setState(() => ({
+        booksSearched: [],
+        queryHasError: false,
+        loading: false,
+      }));
+      return;
+    }
+
+    await isLoading(true);
+
+    const booksSearched = await BooksAPI.search(query);
+
+    await this.setState({
+      booksSearched: booksSearched.error ? [] : booksSearched.map((book) => {
+        const bookFromShelf = getBookFromShelf(book.id);
+        book.shelf = bookFromShelf ? bookFromShelf.shelf || 'none' : 'none';
+        return book;
+      }),
+      queryHasError: booksSearched.error,
+      loading: false,
+    });
   }
 
   async getAll() {
@@ -36,21 +76,8 @@ class BooksApp extends React.Component {
     await isLoading(false);
   }
 
-  getBookFromShelf = (id) => {
-    const { books } = this.state;
-
-    return books.find(book => book.id === id).shelf;
-  }
-
-  async updateBookLocal(book, shelf) {
-    const { books } = this.state;
-    const updatedBooks = books.map((mBook) => {
-      if (mBook.id === book.id) {
-        mBook.shelf = shelf;
-      }
-      return mBook;
-    });
-    await this.setState({ books: updatedBooks });
+  async isLoading(stats) {
+    await this.setState({ loading: stats });
   }
 
   async handleUpdateBook(book, shelf) {
@@ -62,13 +89,28 @@ class BooksApp extends React.Component {
     await isLoading(false);
   }
 
-  async isLoading(stats) {
-    await this.setState({ loading: stats });
+  async updateBookLocal(book, shelf) {
+    const { books, getBookFromShelf } = this.state;
+
+    const bookFromShelf = getBookFromShelf(book.id);
+
+    if (bookFromShelf) {
+      const updatedBooks = books.map((mBook) => {
+        if (mBook.id === book.id) {
+          mBook.shelf = shelf;
+        }
+        return mBook;
+      });
+      await this.setState({ books: updatedBooks });
+    }
   }
 
   render() {
-    const { getAll, handleUpdateBook } = this;
-    const { books, loading } = this.state;
+    const { getAll, handleUpdateBook, getBooksSearched } = this;
+    const {
+      books, loading, booksSearched,
+      query, queryHasError,
+    } = this.state;
 
     return (
       <div className="app">
@@ -89,7 +131,11 @@ class BooksApp extends React.Component {
           render={() => (
             <Search
               onUpdateBook={handleUpdateBook}
+              onBooksSearch={getBooksSearched}
               loading={loading}
+              booksSearched={booksSearched}
+              query={query}
+              queryHasError={queryHasError}
             />
           )}
         />

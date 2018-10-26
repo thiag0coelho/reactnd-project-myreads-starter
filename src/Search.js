@@ -4,40 +4,14 @@ import PropTypes from 'prop-types';
 import { DebounceInput } from 'react-debounce-input';
 import TextField from '@material-ui/core/TextField';
 import Spinner from './components/Spinner';
-import * as BooksAPI from './helpers/BooksAPI';
 import Book from './Book';
 import './styles/App.css';
 
-class Search extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      booksSearched: [],
-      query: '',
-    };
-  }
-
-  getBooks = (query) => {
-    if (query && query.length > 1) {
-      this.isLoading(true);
-      BooksAPI.search(query)
-        .then((booksSearched) => {
-          this.setState(() => ({
-            booksSearched: booksSearched.error ? booksSearched.items : booksSearched,
-          }));
-        });
-    } else {
-      this.setState(() => ({
-        booksSearched: [],
-      }));
-    }
-  }
-
+class Search extends React.PureComponent {
   handleChange = (event) => {
-    this.setState({
-      query: event.target.value,
-    },
-      (this.getBooks(event.target.value)));
+    const { onBooksSearch } = this.props;
+
+    onBooksSearch(event.target.value);
   }
 
   handleUpdateBook = (book, shelf) => {
@@ -46,11 +20,8 @@ class Search extends React.Component {
     onUpdateBook(book, shelf);
   }
 
-  isLoading = stats => this.setState(() => ({ loading: stats }));
-
   render() {
-    const { booksSearched, query } = this.state;
-    const { loading } = this.props;
+    const { loading, booksSearched, query } = this.props;
     return (
       <div className="search-books">
         <Spinner loading={loading} />
@@ -88,6 +59,9 @@ class Search extends React.Component {
 
 Search.propTypes = {
   onUpdateBook: PropTypes.func.isRequired,
+  onBooksSearch: PropTypes.func.isRequired,
+  booksSearched: PropTypes.arrayOf(Object).isRequired,
+  query: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
