@@ -21,7 +21,10 @@ class Search extends React.PureComponent {
   }
 
   render() {
-    const { loading, booksSearched, query } = this.props;
+    const {
+      loading, booksSearched,
+      query, queryHasError,
+    } = this.props;
     return (
       <div className="search-books">
         <Spinner loading={loading} />
@@ -42,6 +45,7 @@ class Search extends React.PureComponent {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
+            { queryHasError && <span>{'Sorry, we couldn\'t found what you\'re looking for.'}</span> }
             { booksSearched.map(book => (
               <li key={book.id}>
                 {<Book
@@ -62,6 +66,7 @@ Search.propTypes = {
   onBooksSearch: PropTypes.func.isRequired,
   booksSearched: PropTypes.arrayOf(Object).isRequired,
   query: PropTypes.string.isRequired,
+  queryHasError: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 

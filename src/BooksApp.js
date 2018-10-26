@@ -61,7 +61,7 @@ class BooksApp extends React.Component {
         book.shelf = bookFromShelf ? bookFromShelf.shelf || 'none' : 'none';
         return book;
       }),
-      queryHasError: booksSearched.error,
+      queryHasError: booksSearched.error !== undefined,
       loading: false,
     });
   }
